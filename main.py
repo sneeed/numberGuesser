@@ -1,16 +1,43 @@
-# This is a sample Python script.
+import random as rnd
+import time as tm
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+wartezeit = 0
 
 
-# Press the green button in the gutter to run the script.
+def lies_kleinste_zahl_ein():
+    zahl = input("Wie groß muss die Zahl mindestens sein?")
+    return zahl
+
+
+def lies_groesste_zahl_sein():
+    zahl = input("Wie groß darf die Zahl höchstens sein?")
+    return zahl
+
+
+def berechne_zufallszahl(zahl_klein, zahl_gross):
+    return rnd.randint(zahl_klein, zahl_gross)
+
+
+def frage_nach_zufallszahl(richtige_zufallszahl):
+    input("Was denkst du ist die geheime Zahl?")
+
+
+def ist_richtige_zahl():
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    print("Du darfst eine Zahl raten.")
+    tm.sleep(wartezeit)
+    print("Lege bitte fest, in welchem Bereich die Zahl liegen soll.")
+    tm.sleep(wartezeit)
+    kleinste_zahl = lies_kleinste_zahl_ein()
+    groesste_zahl = lies_groesste_zahl_sein()
+    print("Die Zahl muss also zwischen " + kleinste_zahl + " und " + groesste_zahl + " liegen.")
+    tm.sleep(wartezeit)
+    zufallszahl = berechne_zufallszahl(int(kleinste_zahl), int(groesste_zahl))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+
+
+    print("Die geheime Zufallszahl lautet " + str(zufallszahl) + ".")
+
