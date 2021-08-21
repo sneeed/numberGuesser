@@ -1,8 +1,8 @@
 import random as rnd
 import time as tm
 
-# wartezeit = 0  # voreingestellt ist 2  # for Testing
-wartezeit = 2  # voreingestellt ist 2
+wartezeit = 0  # voreingestellt ist 2  # for Testing
+# wartezeit = 2  # voreingestellt ist 2
 
 
 def willkommen():
@@ -52,7 +52,8 @@ def frage_nach_zufallszahl(zufallszahl, größte_zahl, kleinste_zahl):
 
 def gebe_hinweis(zufallszahl, input_zahl, größte_zahl, kleinste_zahl):
     anzahl_hinweisarten = 3
-    switcher = rnd.randint(1, anzahl_hinweisarten)
+    # switcher = rnd.randint(1, anzahl_hinweisarten)
+    switcher = 1
 
     if switcher == 1:
         kleinste_zahl = gebe_hinweis_größer(zufallszahl, kleinste_zahl)
@@ -67,13 +68,13 @@ def gebe_hinweis(zufallszahl, input_zahl, größte_zahl, kleinste_zahl):
 
 
 def gebe_hinweis_größer(zufallszahl, kleinste_zahl):
-    zahl_kleiner_als_zufallszahl = str(rnd.randint(int(kleinste_zahl) - 1, int(zufallszahl)))
+    zahl_kleiner_als_zufallszahl = str(rnd.randint(int(kleinste_zahl), int(zufallszahl) - 1))
     print("Die geheime Zahl ist größer als " + str(zahl_kleiner_als_zufallszahl) + ".")
     return zahl_kleiner_als_zufallszahl
 
 
 def gebe_hinweis_kleiner(zufallszahl, größte_zahl):
-    zahl_größer_als_zufallszahl = str(rnd.randint(int(zufallszahl), int(größte_zahl) + 1))
+    zahl_größer_als_zufallszahl = str(rnd.randint(int(zufallszahl - 1), int(größte_zahl)))
     print("Die geheime Zahl ist kleiner als " + str(zahl_größer_als_zufallszahl) + ".")
     return zahl_größer_als_zufallszahl
 
@@ -111,6 +112,6 @@ if __name__ == '__main__':
 
     tm.sleep(wartezeit)
     zufallszahl = berechne_zufallszahl(int(kleinste_zahl), int(größte_zahl))
-    # print("For testing: Zufallszahl ist " + str(zufallszahl))  # for testing
+    print("For testing: Zufallszahl ist " + str(zufallszahl))  # for testing
 
     frage_nach_zufallszahl(zufallszahl, größte_zahl, kleinste_zahl)
