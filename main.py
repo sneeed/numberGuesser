@@ -17,18 +17,35 @@ def wertebereich_festlegen():
     tm.sleep(wartezeit)
     kleinste_zahl = lies_kleinste_zahl_ein()
     größte_zahl = lies_größte_zahl_sein()
-    print("Die geheime Zahl muss also zwischen " + kleinste_zahl + " und " + größte_zahl + " liegen.")
+    print("Die geheime Zahl muss also zwischen " + str(kleinste_zahl) + " und " + str(größte_zahl) + " liegen.")
     return kleinste_zahl, größte_zahl
 
 
 def lies_kleinste_zahl_ein():
-    zahl = input("Wie groß muss die geheime Zahl mindestens sein?\n")
+    while True:
+        try:
+            zahl = int(input("Wie groß muss die geheime Zahl mindestens sein?\n"))
+            break
+        except ValueError:
+            print("Leider keine gültige Zahl eingegeben. Versuch es noch einmal.")
+            continue
     return zahl
 
 
 def lies_größte_zahl_sein():
-    zahl = input("Wie groß darf die geheime Zahl höchstens sein?\n")
+    while True:
+        try:
+            zahl = int(input("Wie groß darf die geheime Zahl höchstens sein?\n"))
+            break
+        except ValueError:
+            print("Leider keine gültige Zahl eingegeben. Versuch es noch einmal.")
+            continue
     return zahl
+
+
+
+def prüfe_ob_zulässige_zahl(eingelesene_zahl):
+    return eingelesene_zahl.isdecimal()
 
 
 def berechne_zufallszahl(zahl_klein, zahl_gross):
