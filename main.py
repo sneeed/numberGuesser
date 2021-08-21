@@ -36,6 +36,9 @@ def berechne_zufallszahl(zahl_klein, zahl_gross):
 
 
 def frage_nach_zufallszahl(zufallszahl, größte_zahl, kleinste_zahl):
+    if int(größte_zahl) - int(kleinste_zahl) == 0:
+        print("Da machst du es dir aber einfach, die geheime Zahl muss " + str(größte_zahl) + " sein.")
+        return
     zufallszahl = str(zufallszahl)
     input_zahl = ""
 
@@ -52,8 +55,8 @@ def frage_nach_zufallszahl(zufallszahl, größte_zahl, kleinste_zahl):
 
 def gebe_hinweis(zufallszahl, input_zahl, größte_zahl, kleinste_zahl):
     anzahl_hinweisarten = 3
-    # switcher = rnd.randint(1, anzahl_hinweisarten)
-    switcher = 1
+    switcher = rnd.randint(1, anzahl_hinweisarten)
+    # switcher = 1  # for testing
 
     if switcher == 1:
         kleinste_zahl = gebe_hinweis_größer(zufallszahl, kleinste_zahl)
