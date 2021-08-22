@@ -116,11 +116,7 @@ def give_hint_multiple(secret_number):
     maximum = min(secret_number, 20)
     multiple_of_number = rnd.randint(2, maximum)
     is_multiple = multiple_of[multiple_of_number]
-    if is_multiple:
-        is_multiple_string = "a"
-    else:
-        is_multiple_string = "no"
-
+    is_multiple_string = "a" if is_multiple else "no"
     print("My secret number is " + is_multiple_string + " multiple of " + str(multiple_of_number) + ".")
 
 
