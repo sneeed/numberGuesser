@@ -1,136 +1,141 @@
 import random as rnd
 import time as tm
 
-wartezeit = 0  # voreingestellt ist 2  # for Testing
-# wartezeit = 2  # voreingestellt ist 2
+waiting_time = 0  # preset is 2 # for Testing
+# waiting_time = 2  # preset is 2
 
 
-def willkommen():
-    print("Hallo, wir spielen heute ein kleines Spiel.")
-    tm.sleep(wartezeit / 2)
-    print("Ich überlege mir eine geheime Zahl und du darfst sie erraten.")
-    tm.sleep(wartezeit)
+def welcome():
+    print("Hello, let's play a little game.")
+    tm.sleep(waiting_time / 2)
+    print("I think of a secret number and you then guess it.")
+    tm.sleep(waiting_time)
 
 
-def wertebereich_festlegen():
-    print("Lege bitte fest, in welchem Bereich die geheime Zahl liegen soll.")
-    tm.sleep(wartezeit)
-    kleinste_zahl = lies_kleinste_zahl_ein()
-    größte_zahl = lies_größte_zahl_sein()
-    print("Die geheime Zahl muss also zwischen " + str(kleinste_zahl) + " und " + str(größte_zahl) + " liegen.")
-    return kleinste_zahl, größte_zahl
+def define_number_area():
+    print("Please set in which number area my secret number should be.")
+    tm.sleep(waiting_time)
+    smallest_number = read_smallest_number()
+    biggest_number = read_biggest_number()
+    print("So my secret number should lay between " + str(smallest_number) + " and " + str(biggest_number) + " (inclusively).")
+    return smallest_number, biggest_number
 
 
-def lies_kleinste_zahl_ein():
+def read_smallest_number():
     while True:
         try:
-            zahl = int(input("Wie groß muss die geheime Zahl mindestens sein?\n"))
+            number = int(input("What would be the smallest value of the number area my secret number should be in?\n"))
             break
         except ValueError:
-            print("Leider keine gültige Zahl eingegeben. Versuch es noch einmal.")
+            print("You didn't enter a valid number. Please try again.")
             continue
-    return zahl
+    return number
 
 
-def lies_größte_zahl_sein():
+def read_biggest_number():
     while True:
         try:
-            zahl = int(input("Wie groß darf die geheime Zahl höchstens sein?\n"))
+            number = int(input("What would be the biggest value of the number area my secret number should be in?\n"))
             break
         except ValueError:
-            print("Leider keine gültige Zahl eingegeben. Versuch es noch einmal.")
+            print("You didn't enter a valid number. Please try again.")
             continue
-    return zahl
+    return number
 
 
-def prüfe_ob_zulässige_zahl(eingelesene_zahl):
-    return eingelesene_zahl.isdecimal()
+def check_if_valid_number(input_number):
+    return input_number.isdecimal()
 
 
-def berechne_zufallszahl(zahl_klein, zahl_gross):
-    return rnd.randint(zahl_klein, zahl_gross)
+def calculate_secret_number(smallest_number, biggest_number):
+    return rnd.randint(smallest_number, biggest_number)
 
 
-def frage_nach_zufallszahl(zufallszahl, größte_zahl, kleinste_zahl):
-    if größte_zahl - kleinste_zahl == 0:
-        print("Da machst du es dir aber einfach, die geheime Zahl muss " + str(größte_zahl) + " sein.")
+def ask_for_secret_number(secret_number, biggest_number, smallest_number):
+    if biggest_number - smallest_number == 0:
+        print("Nah, that's too easy. With such a small number range the secret number must be " + str(biggest_number) + ".")
         return
-    eingegebene_zahl = None
+    input_number = None
 
-    while not ist_richtige_zahl(eingegebene_zahl, zufallszahl):
-        if eingegebene_zahl:  # prüft ob String input_zahl leer ist und damit noch nie eingegeben wurde
-            print("Nein, leider ist " + str(eingegebene_zahl) + " nicht die geheime Zahl.")
+    while not is_number_guess_correct(input_number, secret_number):
+        if input_number:  # checks if input_number is None and thus has't been entered yet
+            print("No, " + str(input_number) + " is not my secret number.")
             print("----------------------------------")
-            größte_zahl, kleinste_zahl = gebe_hinweis(zufallszahl, größte_zahl, kleinste_zahl)
-        eingegebene_zahl = int(input("Was denkst du ist die geheime Zahl?\n"))
-        tm.sleep(wartezeit / 2)
+            biggest_number, smallest_number = give_hint(secret_number, biggest_number, smallest_number)
+        input_number = int(input("What do you think is my secret number?\n"))
+        tm.sleep(waiting_time / 2)
 
-    print("\\(＾O＾)／\nGlückwunsch, du hast die Zufallszahl erraten. Sie lautet " + str(eingegebene_zahl) + ".")
+    print("\\(＾O＾)／\nCongratulations, you guessed my secret number. It was " + str(input_number) + ".")
 
 
-def gebe_hinweis(zufallszahl, größte_zahl, kleinste_zahl):
-    anzahl_hinweisarten = 3
-    switcher = rnd.randint(1, anzahl_hinweisarten)
+def give_hint(secret_number, biggest_number, smallest_number):
+    no_of_hint_types = 3
+    if secret_number == smallest_number:
+        switcher = rnd.randint(2, no_of_hint_types)
+    elif secret_number == biggest_number:
+        switcher = rnd.randint(1, 2)
+    elif secret_number > 1:
+        switcher = rnd.randint(1, no_of_hint_types)
     # switcher = 3  # for testing
 
     if switcher == 1:
-        kleinste_zahl = gebe_hinweis_größer(zufallszahl, kleinste_zahl)
+        smallest_number = give_hint_bigger(secret_number, smallest_number)
 
     elif switcher == 2:
-        größte_zahl = gebe_hinweis_kleiner(zufallszahl, größte_zahl)
+        biggest_number = give_hint_smaller(secret_number, biggest_number)
 
     elif switcher == 3:
-        gebe_hinweis_vielfaches(zufallszahl)
+        give_hint_multiple(secret_number)
 
-    return größte_zahl, kleinste_zahl
-
-
-def gebe_hinweis_größer(zufallszahl, kleinste_zahl):
-    zahl_kleiner_als_zufallszahl = (rnd.randint(kleinste_zahl, zufallszahl - 1))
-    print("Die geheime Zahl ist größer als " + str(zahl_kleiner_als_zufallszahl) + ".")
-    return zahl_kleiner_als_zufallszahl
+    return biggest_number, smallest_number
 
 
-def gebe_hinweis_kleiner(zufallszahl, größte_zahl):
-    zahl_größer_als_zufallszahl = (rnd.randint(zufallszahl - 1, größte_zahl))
-    print("Die geheime Zahl ist kleiner als " + str(zahl_größer_als_zufallszahl) + ".")
-    return zahl_größer_als_zufallszahl
+def give_hint_bigger(secret_number, smallest_number):
+    some_number_smaller_than_secret_number = (rnd.randint(smallest_number, secret_number - 1))
+    print("My secret number is bigger than " + str(some_number_smaller_than_secret_number) + ".")
+    return some_number_smaller_than_secret_number
 
 
-def gebe_hinweis_vielfaches(zufallszahl):
-    # Berechne alle möglichen Vielfachen der Zufallszahl
-    vielfaches_von = [False, True]  # niemals Vielfaches von 0, immer Vielfaches von 1
-    for num in range(2, zufallszahl):
-        if zufallszahl % num == 0:
-            vielfaches_von.append(True)
+def give_hint_smaller(secret_number, biggest_number):
+    some_number_bigger_than_secret_number = (rnd.randint(secret_number + 1, biggest_number))
+    print("My secret number is smaller than " + str(some_number_bigger_than_secret_number) + ".")
+    return some_number_bigger_than_secret_number
+
+
+def give_hint_multiple(secret_number):
+    # Calculate some possible multiples of my secret number
+    multiple_of = [False, True]  # no number is multiple of 0, all numbers are multiple of 1
+    for num in range(2, secret_number):
+        if secret_number % num == 0:
+            multiple_of.append(True)
         else:
-            vielfaches_von.append(False)
+            multiple_of.append(False)
 
-    # Wähle ein Vielfaches zufällig aus und gebe den entsprechenden Wert aus
-    # print("for testing: " + str(vielfaches_von))
-    maximum = min(zufallszahl, 20)
-    vielfaches_von_zahl = rnd.randint(2, maximum)
-    ist_vielfaches = vielfaches_von[vielfaches_von_zahl]
-    if ist_vielfaches:
-        ist_vielfaches_string = "ein"
+    # Select randomly a multiple and print its value
+    # print("for testing: " + str(multiple_of))
+    maximum = min(secret_number, 20)
+    multiple_of_number = rnd.randint(2, maximum)
+    is_multiple = multiple_of[multiple_of_number]
+    if is_multiple:
+        is_multiple_string = "a"
     else:
-        ist_vielfaches_string = "kein"
+        is_multiple_string = "no"
 
-    print("Die geheime Zahl ist " + ist_vielfaches_string + " Vielfaches von " + str(vielfaches_von_zahl) + ".")
+    print("My secret number is " + is_multiple_string + " multiple of " + str(multiple_of_number) + ".")
 
 
-def ist_richtige_zahl(geratene_zahl, zufallszahl):
-    return geratene_zahl == zufallszahl
+def is_number_guess_correct(guessed_number, secret_number):
+    return guessed_number == secret_number
 
 
 if __name__ == '__main__':
-    willkommen()
+    welcome()
 
-    kleinste_zahl, größte_zahl = wertebereich_festlegen()
-    # kleinste_zahl, größte_zahl = 0, 10
+    smallest_number, biggest_number = define_number_area()
+    # smallest_number, biggest_number = 0, 10  # for testing
 
-    tm.sleep(wartezeit)
-    zufallszahl = berechne_zufallszahl(kleinste_zahl, größte_zahl)
-    # print("For testing: Zufallszahl ist " + str(zufallszahl))  # for testing
+    tm.sleep(waiting_time)
+    secret_number = calculate_secret_number(smallest_number, biggest_number)
+    print("For testing: secret_number ist " + str(secret_number))  # for testing
 
-    frage_nach_zufallszahl(zufallszahl, größte_zahl, kleinste_zahl)
+    ask_for_secret_number(secret_number, biggest_number, smallest_number)
