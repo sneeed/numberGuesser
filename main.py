@@ -1,20 +1,14 @@
 import random as rnd
 import time as tm
 
-waiting_time = 0  # preset is 2 # for Testing
-# waiting_time = 2  # preset is 2
-
 
 def welcome():
     print("Hello, let's play a little game.")
-    tm.sleep(waiting_time / 2)
     print("I think of a secret number and you then guess it.")
-    tm.sleep(waiting_time)
 
 
 def define_number_area():
     print("Please set in which number area my secret number should be.")
-    tm.sleep(waiting_time)
     smallest_number = read_smallest_number()
     biggest_number = read_biggest_number()
     print("So my secret number should lay between " + str(smallest_number) + " and " + str(biggest_number) + " (inclusively).")
@@ -63,7 +57,6 @@ def ask_for_secret_number(secret_number, biggest_number, smallest_number):
             print("----------------------------------")
             biggest_number, smallest_number = give_hint(secret_number, biggest_number, smallest_number)
         input_number = int(input("What do you think is my secret number?\n"))
-        tm.sleep(waiting_time / 2)
 
     print("\\(＾O＾)／\nCongratulations, you guessed my secret number. It was " + str(input_number) + ".")
 
@@ -130,7 +123,6 @@ if __name__ == '__main__':
     smallest_number, biggest_number = define_number_area()
     # smallest_number, biggest_number = 0, 10  # for testing
 
-    tm.sleep(waiting_time)
     secret_number = calculate_secret_number(smallest_number, biggest_number)
     print("For testing: secret_number ist " + str(secret_number))  # for testing
 
